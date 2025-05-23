@@ -95,4 +95,5 @@ class IntentClassificationResponse(BaseModel):
     prompt: str = Field(..., description="Prompt associated with the intent")
     example_queries: List[str] = Field(..., description="Example queries for this intent")
     required_context: List[str] = Field(..., description="Required context for this intent")
+    required_functions: List[str] = Field(default=[], description="List of required functions for this intent")
     similarity_score: float = Field(..., description="Similarity score of the match") 

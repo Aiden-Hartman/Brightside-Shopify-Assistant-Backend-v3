@@ -100,6 +100,7 @@ async def classify_intent(request: IntentClassificationRequest) -> IntentClassif
             prompt=best_match.payload.get("prompt", ""),
             example_queries=best_match.payload.get("example_queries", []),
             required_context=best_match.payload.get("required_context", []),
+            required_functions=best_match.payload.get("required_functions", []),
             similarity_score=best_match.score
         )
 
