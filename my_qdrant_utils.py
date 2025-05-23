@@ -27,7 +27,9 @@ class QdrantClient:
         
         # Use environment variables for configuration
         base_url = os.getenv("QDRANT_URL")
-        self.url = f"https://{base_url}:443"  # Explicitly use HTTPS with port 443
+        # Remove any existing https:// or http:// prefix and add https://
+        base_url = base_url.replace("https://", "").replace("http://", "")
+        self.url = f"https://{base_url}"
         self.api_key = os.getenv("QDRANT_API_KEY")
         self.collection_name = os.getenv("QDRANT_COLLECTION_NAME", "brightside-products")
         self.vector_size = int(os.getenv("QDRANT_VECTOR_SIZE", "1536"))  # OpenAI text-embedding-3-small model dimension

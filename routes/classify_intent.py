@@ -22,8 +22,13 @@ router = APIRouter()
 openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Initialize Qdrant client for intent classification
+qdrant_url = os.getenv("QDRANT_URL_2")
+# Remove any existing https:// or http:// prefix and add https://
+qdrant_url = qdrant_url.replace("https://", "").replace("http://", "")
+qdrant_url = f"https://{qdrant_url}"
+
 qdrant_client = QdrantClient(
-    url=os.getenv("QDRANT_URL_2"),
+    url=qdrant_url,
     api_key=os.getenv("QDRANT_API_KEY_2")
 )
 
