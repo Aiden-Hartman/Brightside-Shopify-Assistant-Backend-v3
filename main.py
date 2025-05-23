@@ -9,6 +9,7 @@ from embedder import Embedder
 from my_qdrant_utils import QdrantClient
 from utils import log_error, log_info
 from chat_route import router as chat_router
+from routes.classify_intent import router as classify_intent_router
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -36,6 +37,7 @@ qdrant = QdrantClient()
 
 # Include the chat router
 app.include_router(chat_router, prefix="/api", tags=["chat"])
+app.include_router(classify_intent_router, prefix="/api", tags=["intent"])
 
 # Mock products for fallback
 mockProducts = [

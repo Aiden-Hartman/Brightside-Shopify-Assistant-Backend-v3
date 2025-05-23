@@ -79,4 +79,19 @@ class ChatResponse(BaseModel):
     recommend: Optional[bool] = Field(default=None, description="Whether to recommend products based on the response")
     products: Optional[List[Product]] = Field(default=None, description="List of recommended products if any")
     function_called: Optional[bool] = Field(default=False, description="Whether a function was called in this response")
-    function_name: Optional[str] = Field(default=None, description="Name of the function that was called, if any") 
+    function_name: Optional[str] = Field(default=None, description="Name of the function that was called, if any")
+
+class IntentClassificationRequest(BaseModel):
+    """Request model for intent classification."""
+    message: str = Field(..., description="The user's message to classify")
+    min_similarity_threshold: float = Field(default=0.7, description="Minimum similarity threshold for intent matching")
+    limit: int = Field(default=1, description="Maximum number of intents to return")
+
+class IntentClassificationResponse(BaseModel):
+    """Response model for intent classification."""
+    intent_id: int = Field(..., description="Unique identifier for the intent")
+    title: str = Field(..., description="Title of the intent")
+    prompt: str = Field(..., description="Prompt associated with the intent")
+    example_queries: List[str] = Field(..., description="Example queries for this intent")
+    required_context: List[str] = Field(..., description="Required context for this intent")
+    similarity_score: float = Field(..., description="Similarity score of the match") 
