@@ -103,11 +103,19 @@ class ChatLLM:
         """
         messages = []
         
-        # Add system message
-        messages.append({
-            "role": "system",
-            "content": system_prompt or DEFAULT_SYSTEM_PROMPT
-        })
+        # Add system message if provided, otherwise use default
+        if system_prompt:
+            logger.debug("Using provided system prompt")
+            messages.append({
+                "role": "system",
+                "content": system_prompt
+            })
+        else:
+            logger.debug("Using default system prompt")
+            messages.append({
+                "role": "system",
+                "content": DEFAULT_SYSTEM_PROMPT
+            })
         
         # Add chat history
         if chat_history:
@@ -122,6 +130,9 @@ class ChatLLM:
             "role": "user",
             "content": message
         })
+        
+        logger.debug("Formatted messages:")
+        logger.debug(json.dumps(messages, indent=2))
         
         return messages
 

@@ -95,6 +95,7 @@ async def chat(request: ChatRequest = Body(...)) -> ChatResponse:
         session_id = request.session_id
         chat_history = request.chat_history
         quiz_answers = request.quiz_answers
+        system_prompt = request.system_prompt
 
         logger.debug("Extracted fields:")
         logger.debug(f"- Message: {message}")
@@ -102,6 +103,7 @@ async def chat(request: ChatRequest = Body(...)) -> ChatResponse:
         logger.debug(f"- Session ID: {session_id}")
         logger.debug(f"- Chat history length: {len(chat_history) if chat_history else 0}")
         logger.debug(f"- Quiz answers present: {'Yes' if quiz_answers else 'No'}")
+        logger.debug(f"- System prompt present: {'Yes' if system_prompt else 'No'}")
 
         if not message:
             logger.error("Empty message received")
@@ -144,9 +146,12 @@ async def chat(request: ChatRequest = Body(...)) -> ChatResponse:
             logger.debug("Chat history:")
             logger.debug(json.dumps([msg for msg in chat_hist], indent=2, cls=DateTimeEncoder))
 
-        # Build dynamic system prompt
-        logger.debug("\nBuilding system prompt...")
-        system_prompt = build_system_prompt(stored_quiz_answers)
+        # Use provided system prompt or build dynamic one if not provided
+        if not system_prompt:
+            logger.debug("\nBuilding dynamic system prompt...")
+            system_prompt = build_system_prompt(stored_quiz_answers)
+        else:
+            logger.debug("\nUsing provided system prompt")
 
         # Generate response using LLM
         logger.debug("\nGenerating LLM response...")

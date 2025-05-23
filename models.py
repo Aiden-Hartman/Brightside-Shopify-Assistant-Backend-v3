@@ -71,6 +71,7 @@ class ChatRequest(BaseModel):
     session_id: Optional[str] = Field(default=None, description="Optional session ID for grouping messages")
     chat_history: Optional[List[ChatMessage]] = Field(default=None, description="Optional previous messages in the conversation")
     quiz_answers: Optional[Dict[str, Any]] = Field(default=None, description="Optional quiz answers containing user preferences, budget, and goals")
+    system_prompt: Optional[str] = Field(default=None, description="Optional system prompt to guide the LLM's behavior")
 
 class ChatResponse(BaseModel):
     """Response model for chat endpoint."""
