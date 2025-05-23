@@ -27,6 +27,9 @@ qdrant_client = QdrantClient(
     api_key=os.getenv("QDRANT_API_KEY_2")
 )
 
+# Get collection name from environment variable
+COLLECTION_NAME = os.getenv("QDRANT_COLLECTION_NAME_2", "brightside-gpt-context-prompts-5-22-2025")
+
 @router.post("/classify-intent", response_model=IntentClassificationResponse)
 async def classify_intent(request: IntentClassificationRequest) -> IntentClassificationResponse:
     """
@@ -58,7 +61,7 @@ async def classify_intent(request: IntentClassificationRequest) -> IntentClassif
         logger.debug("Querying Qdrant for similar intents...")
         try:
             search_results = qdrant_client.search(
-                collection_name="brightside-gpt-context-prompts-5-22-2025",
+                collection_name=COLLECTION_NAME,
                 query_vector=query_vector,
                 limit=request.limit,
                 score_threshold=request.min_similarity_threshold

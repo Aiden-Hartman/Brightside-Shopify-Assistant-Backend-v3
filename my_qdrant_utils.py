@@ -25,12 +25,17 @@ class QdrantClient:
         logger.debug("INITIALIZING QDRANT CLIENT")
         logger.debug("="*50)
         
-        # Use hardcoded values for testing
-        base_url = "7bc04bf8-4c16-41c2-980a-153ec3d2aa0f.us-east-1-0.aws.cloud.qdrant.io"
+        # Use environment variables for configuration
+        base_url = os.getenv("QDRANT_URL")
         self.url = f"https://{base_url}:443"  # Explicitly use HTTPS with port 443
-        self.api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.OWrnILnSEO0ctzD1r5jtaDvKlTaF4t_7a_zpJsUN11M"
-        self.collection_name = "brightside-products"
-        self.vector_size = 1536  # OpenAI text-embedding-3-small model dimension
+        self.api_key = os.getenv("QDRANT_API_KEY")
+        self.collection_name = os.getenv("QDRANT_COLLECTION_NAME", "brightside-products")
+        self.vector_size = int(os.getenv("QDRANT_VECTOR_SIZE", "1536"))  # OpenAI text-embedding-3-small model dimension
+        
+        if not base_url or not self.api_key:
+            error_msg = "QDRANT_URL and QDRANT_API_KEY must be set in environment variables"
+            logger.error(error_msg)
+            raise ValueError(error_msg)
         
         logger.debug("Configuration:")
         logger.debug(f"- URL: {self.url}")
