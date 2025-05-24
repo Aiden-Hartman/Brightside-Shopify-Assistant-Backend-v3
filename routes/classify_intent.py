@@ -81,10 +81,10 @@ async def classify_intent(request: IntentClassificationRequest) -> IntentClassif
             logger.info("No matches found above threshold, returning generic intent")
             return IntentClassificationResponse(
                 intent_id=0,
+                id=0,
                 title="Generic",
-                prompt="Generic response",
-                example_queries=[],
-                required_context=[],
+                example="Generic response",
+                sop=[],
                 similarity_score=0.0
             )
 
@@ -96,17 +96,19 @@ async def classify_intent(request: IntentClassificationRequest) -> IntentClassif
         # Create response
         response = IntentClassificationResponse(
             intent_id=best_match.payload.get("intent_id", 0),
+            id=best_match.payload.get("id", 0),
             title=best_match.payload.get("title", ""),
-            prompt=best_match.payload.get("prompt", ""),
-            example_queries=best_match.payload.get("example_queries", []),
-            required_context=best_match.payload.get("required_context", []),
-            required_functions=best_match.payload.get("required_functions", []),
+            example=best_match.payload.get("example", ""),
+            sop=best_match.payload.get("sop", []),
             similarity_score=best_match.score
         )
 
         logger.debug("Created response:")
         logger.debug(f"- Intent ID: {response.intent_id}")
+        logger.debug(f"- ID: {response.id}")
         logger.debug(f"- Title: {response.title}")
+        logger.debug(f"- Example: {response.example}")
+        logger.debug(f"- SOP Steps: {len(response.sop)}")
         logger.debug(f"- Similarity Score: {response.similarity_score}")
 
         return response

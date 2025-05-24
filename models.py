@@ -91,9 +91,8 @@ class IntentClassificationRequest(BaseModel):
 class IntentClassificationResponse(BaseModel):
     """Response model for intent classification."""
     intent_id: int = Field(..., description="Unique identifier for the intent")
+    id: int = Field(..., description="ID of the intent")
     title: str = Field(..., description="Title of the intent")
-    prompt: str = Field(..., description="Prompt associated with the intent")
-    example_queries: List[str] = Field(..., description="Example queries for this intent")
-    required_context: List[str] = Field(..., description="Required context for this intent")
-    required_functions: List[str] = Field(default=[], description="List of required functions for this intent")
+    example: str = Field(..., description="Example query for this intent")
+    sop: List[Dict[str, Any]] = Field(..., description="Standard Operating Procedure steps for handling this intent")
     similarity_score: float = Field(..., description="Similarity score of the match") 
