@@ -151,7 +151,7 @@ class QdrantClient:
                     # Get required fields with fallbacks
                     title = hit.payload.get("title", "")
                     description = hit.payload.get("description", "")
-                    price = hit.payload.get("price", "0.00")
+                    price = str(hit.payload.get("price", "0.00"))  # Convert price to string
                     image = hit.payload.get("image", "")
                     link = hit.payload.get("link", "")
                     
